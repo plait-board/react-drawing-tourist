@@ -1,7 +1,6 @@
-import { PlaitBoard, PlaitBoardOptions } from '../interfaces/board';
+import { PlaitBoard, PlaitBoardOptions, RenderElementProps } from '../interfaces/board';
 import { PlaitPointerType } from '../interfaces/pointer';
 import { PlaitElement } from '../interfaces/element';
-// import { PlaitPluginElementContext } from '../core/element/context';
 import { PlaitOperation } from '../interfaces/operation';
 import { Transforms } from '../transforms';
 import { FLUSHING, PATH_REFS } from '../utils/weak-maps';
@@ -100,7 +99,9 @@ export function createBoard(children: PlaitElement[], options?: PlaitBoardOption
         },
         getDeletedFragment: (data: PlaitElement[]) => data,
         getRelatedFragment: (data: PlaitElement[]) => data,
-        // drawElement: (context: PlaitPluginElementContext) => [],
+        drawElement: (context: RenderElementProps) => {
+            throw new Error('unHandle exception')
+        },
         // redrawElement: (context: PlaitPluginElementContext, previousContext) => {},
         // destroyElement: (context: PlaitPluginElementContext) => {},
         isWithinSelection: element => false,
