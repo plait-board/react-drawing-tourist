@@ -70,7 +70,7 @@ export interface PlaitBoard {
     getDeletedFragment: (data: PlaitElement[]) => PlaitElement[];
     getRelatedFragment: (data: PlaitElement[]) => PlaitElement[];
     dblClick: (event: MouseEvent) => void;
-    drawElement: (context: PlaitPluginElementContext) => JSX.Element;
+    drawElement: (props: RenderElementProps) => JSX.Element;
     // redrawElement: (context: PlaitPluginElementContext, previousContext?: PlaitPluginElementContext) => SVGGElement[] | void;
     // destroyElement: (context: PlaitPluginElementContext) => void;
     isRectangleHit: (element: PlaitElement, range: Selection) => boolean;

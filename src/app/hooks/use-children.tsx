@@ -18,7 +18,7 @@ const useChildren = (props: {
 
   for (let i = 0; i < children.length; i++) {
     const n = children[i];
-    children.push(
+    childrenComponents.push(
         <ElementComponent
           element={n}
         />
