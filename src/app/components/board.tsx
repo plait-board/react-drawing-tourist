@@ -27,6 +27,7 @@ import { withHandPointer } from "../plugins/with-hand";
 import { withHotkey } from "../plugins/with-hotkey";
 import { useIsomorphicLayoutEffect } from "../hooks/use-isomorphic-layout-effect";
 import { BOARD_TO_ON_CHANGE } from "../utils/weak-maps";
+import { withRectangle } from "../plugins/rectangle";
 
 export type BoardProps = {
   initialValue: PlaitElement[];
@@ -55,7 +56,7 @@ export const Board = (props: BoardProps) => {
   } = props;
 
   const board = useMemo(() => {
-    const board = withHotkey(
+    const board = withRectangle(withHotkey(
       withHandPointer(
         withHistory(
           withSelection(
@@ -67,7 +68,7 @@ export const Board = (props: BoardProps) => {
           )
         )
       )
-    );
+    ));
     plaitPlugins.forEach((plugin) => {
       plugin(board);
     });

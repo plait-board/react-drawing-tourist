@@ -1,6 +1,6 @@
 import { PlaitBoard, Point, RenderElementProps } from "../interfaces";
 
-export const rectanglePlugin = (board: PlaitBoard) => {
+export const withRectangle = (board: PlaitBoard) => {
     const { drawElement } = board;
     board.drawElement = (props: RenderElementProps) => {
         if (props.element.type === 'geometry' && props.element.shape === 'rectangle') {
