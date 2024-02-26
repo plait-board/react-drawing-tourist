@@ -1,6 +1,8 @@
 import React, {
+  RefObject,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useReducer,
   useRef,
@@ -26,8 +28,9 @@ import { withSelection } from "../plugins/with-selection";
 import { withHandPointer } from "../plugins/with-hand";
 import { withHotkey } from "../plugins/with-hotkey";
 import { useIsomorphicLayoutEffect } from "../hooks/use-isomorphic-layout-effect";
-import { BOARD_TO_ON_CHANGE } from "../utils/weak-maps";
-import { withRectangle } from "../plugins/rectangle";
+import { BOARD_TO_ON_CHANGE, BOARD_TO_ROUGH_SVG } from "../utils/weak-maps";
+import { rectanglePlugin } from "../plugins/rectangle";
+import rough from "roughjs";
 
 export type BoardProps = {
   initialValue: PlaitElement[];
@@ -55,8 +58,10 @@ export const Board = (props: BoardProps) => {
     ...attributes
   } = props;
 
+  const hostRef = useRef<SVGSVGElement>();
+
   const board = useMemo(() => {
-    const board = withRectangle(withHotkey(
+    const board = rectanglePlugin(withHotkey(
       withHandPointer(
         withHistory(
           withSelection(
@@ -92,11 +97,21 @@ export const Board = (props: BoardProps) => {
 
   useEffect(() => {
     BOARD_TO_ON_CHANGE.set(board, onContextChange);
+    const roughSVG = rough.svg(hostRef.current as SVGSVGElement, {
+      options: { roughness: 0, strokeWidth: 1 }
+    });
+    BOARD_TO_ROUGH_SVG.set(board, roughSVG);
 
     return () => {
       BOARD_TO_ON_CHANGE.set(board, () => {});
+      BOARD_TO_ROUGH_SVG.delete(board);
     };
   }, [board, onContextChange]);
+
+  useLayoutEffect(() => {
+    // 在当前组件渲染完成后获取当前组件的DOM
+    console.log(hostRef.current);
+  }, []);
 
   useIsomorphicLayoutEffect(() => {
     // global listener
@@ -113,6 +128,7 @@ export const Board = (props: BoardProps) => {
       <div>
         <div className="viewport-container">
           <svg
+            ref={hostRef as RefObject<SVGSVGElement>}
             width="100%"
             height="100%"
             style={{ position: "relative" }}
