@@ -26,8 +26,9 @@ import { withSelection } from "../plugins/with-selection";
 import { withHandPointer } from "../plugins/with-hand";
 import { withHotkey } from "../plugins/with-hotkey";
 import { useIsomorphicLayoutEffect } from "../hooks/use-isomorphic-layout-effect";
-import { BOARD_TO_ON_CHANGE } from "../utils/weak-maps";
-import { withRectangle } from "../plugins/rectangle";
+import { BOARD_TO_ON_CHANGE, BOARD_TO_ROUGH_SVG } from "../utils/weak-maps";
+import { rectanglePlugin } from "../plugins/rectangle";
+import rough from "roughjs";
 
 export type BoardProps = {
   initialValue: PlaitElement[];
@@ -54,28 +55,36 @@ export const Board = (props: BoardProps) => {
     style: userStyle = {},
     ...attributes
   } = props;
+  const hostRef = useRef<SVGSVGElement>(null);
+  const [board, setBoard] = useState<PlaitBoard>({} as PlaitBoard);
 
-  const board = useMemo(() => {
-    const board = withRectangle(withHotkey(
-      withHandPointer(
-        withHistory(
-          withSelection(
-            withMoving(
-              withBoard(
-                withViewport(withOptions(createBoard(initialValue, options)))
+  useEffect(() => {
+    const board = rectanglePlugin(
+      withHotkey(
+        withHandPointer(
+          withHistory(
+            withSelection(
+              withMoving(
+                withBoard(
+                  withViewport(withOptions(createBoard(initialValue, options)))
+                )
               )
             )
           )
         )
       )
-    ));
+    );
     plaitPlugins.forEach((plugin) => {
       plugin(board);
     });
     if (plaitViewport) {
       board.viewport = plaitViewport;
     }
-    return board;
+    const roughSVG = rough.svg(hostRef.current!, {
+      options: { roughness: 0, strokeWidth: 1 },
+    });
+    BOARD_TO_ROUGH_SVG.set(board, roughSVG);
+    setBoard(board);
   }, []);
 
   const onContextChange = useCallback(() => {
@@ -113,14 +122,13 @@ export const Board = (props: BoardProps) => {
       <div>
         <div className="viewport-container">
           <svg
+            ref={hostRef}
             width="100%"
             height="100%"
             style={{ position: "relative" }}
             className="board-host-svg"
           >
-            <g className="element-host">
-              <Children node={board} />
-            </g>
+            <g className="element-host">{board && <Children node={board} />}</g>
             <g className="element-upper-host"></g>
             <g className="element-active-host"></g>
           </svg>
