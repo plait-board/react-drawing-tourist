@@ -162,7 +162,7 @@ export const PlaitBoard = {
         return BOARD_TO_ROUGH_SVG.get(board) as RoughSVG;
     },
     getBoardContainer(board: PlaitBoard) {
-        return BOARD_TO_ELEMENT_HOST.get(board)?.container as HTMLElement;
+        return BOARD_TO_ELEMENT_HOST.get(board)!.container;
     },
     getRectangle(board: PlaitBoard) {
         return getRectangleByElements(board, board.children, true);
