@@ -19,7 +19,7 @@ import {
   Viewport,
 } from "../interfaces";
 import { createBoard } from "../plugins/create-board";
-import { rectanglePlugin } from "../plugins/rectangle";
+import { withRectangle } from "../plugins/rectangle";
 import { withBoard } from "../plugins/with-board";
 import { withHandPointer } from "../plugins/with-hand";
 import { withHistory } from "../plugins/with-history";
@@ -75,7 +75,7 @@ export const Board = (props: BoardProps) => {
   const isFocused = PlaitBoard.isFocus(board);
 
   useEffect(() => {
-    const board = rectanglePlugin(
+    const board = withRectangle(
       withHotkey(
         withHandPointer(
           withHistory(

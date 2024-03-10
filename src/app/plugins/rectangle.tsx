@@ -6,7 +6,7 @@ import {
   RenderElementProps,
 } from "../interfaces";
 
-export const rectanglePlugin = (board: PlaitBoard) => {
+export const withRectangle = (board: PlaitBoard) => {
   const { drawElement, getRectangle } = board;
   board.drawElement = (props: RenderElementProps) => {
     if (

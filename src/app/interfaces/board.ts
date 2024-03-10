@@ -1,5 +1,5 @@
 import { PlaitPointerType } from './pointer';
-import { ComponentType, PlaitElement } from './element';
+import { PlaitElement } from './element';
 import { PlaitHistory } from './history';
 import { PlaitOperation } from './operation';
 import { Selection } from './selection';
