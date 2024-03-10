@@ -1,7 +1,13 @@
-import { PlaitBoard, Point, RenderElementProps } from "../interfaces";
+import {
+  PlaitBoard,
+  PlaitElement,
+  Point,
+  RectangleClient,
+  RenderElementProps,
+} from "../interfaces";
 
 export const rectanglePlugin = (board: PlaitBoard) => {
-  const { drawElement } = board;
+  const { drawElement, getRectangle } = board;
   board.drawElement = (props: RenderElementProps) => {
     if (
       props.element.type === "geometry" &&
@@ -21,6 +27,13 @@ export const rectanglePlugin = (board: PlaitBoard) => {
       return rectangleG;
     }
     return drawElement(props);
+  };
+
+  board.getRectangle = (element: PlaitElement) => {
+    if (element.type === "geometry") {
+      return RectangleClient.getRectangleByPoints(element.points!);
+    }
+    return getRectangle(element);
   };
   return board;
 };

@@ -14,7 +14,8 @@
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
-    "roughjs": "^4.6.6"
+    "roughjs": "^4.6.6",
+    "ahooks": "^3.7.10"
   },
   "devDependencies": {
     "@types/is-hotkey": "^0.1.10",

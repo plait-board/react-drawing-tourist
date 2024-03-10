@@ -31,10 +31,10 @@ export const BOARD_TO_ELEMENT_HOST = new WeakMap<
   PlaitBoard,
   {
     host: SVGGElement;
-    upperHost?: SVGGElement;
-    activeHost?: SVGGElement;
-    container?: HTMLElement;
-    viewportContainer?: HTMLElement;
+    upperHost: SVGGElement;
+    activeHost: SVGGElement;
+    container: HTMLDivElement;
+    viewportContainer: HTMLElement;
   }
 >();
 
