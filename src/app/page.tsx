@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { Board } from "./components/board";
 import { PlaitElement } from "./interfaces";
 
@@ -7,13 +7,14 @@ export default function Home() {
     {
       id: "Xesdcs",
       type: "geometry",
-      shape: 'rectangle',
+      shape: "rectangle",
       points: [
         [100, 100],
         [300, 300],
       ],
     },
   ] as PlaitElement[];
+
   return (
     <main className="min-h-screen">
       <Board
@@ -21,6 +22,9 @@ export default function Home() {
         options={{}}
         plaitPlugins={[]}
         plaitViewport={{ zoom: 1 }}
+        initializeCompleted={(board) => {
+          console.log(board);
+        }}
       ></Board>
     </main>
   );

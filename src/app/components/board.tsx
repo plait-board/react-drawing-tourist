@@ -48,6 +48,7 @@ export type BoardProps = {
   onChange?: (event: PlaitBoardChangeEvent) => void;
   style?: React.CSSProperties;
   readOnly?: boolean;
+  initializeCompleted?: (board: PlaitBoard) => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 const Children = (props: Parameters<typeof useChildren>[0]) => (
@@ -61,6 +62,7 @@ export const Board = (props: BoardProps) => {
     plaitPlugins,
     plaitViewport,
     onChange,
+    initializeCompleted,
     readOnly = false,
     style: userStyle = {},
     ...attributes
@@ -112,6 +114,9 @@ export const Board = (props: BoardProps) => {
     initializeViewBox(board);
     initializeViewportOffset(board);
     setBoard(board);
+    if (initializeCompleted) {
+      initializeCompleted(board);
+    }
   }, []);
 
   const onContextChange = useCallback(() => {
