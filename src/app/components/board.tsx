@@ -39,6 +39,7 @@ import {
   BOARD_TO_ON_CHANGE,
   BOARD_TO_ROUGH_SVG
 } from "../utils/weak-maps";
+import { Toolbar } from "./toolbar";
 
 export type BoardProps = {
   initialValue: PlaitElement[];
@@ -153,7 +154,7 @@ export const Board = (props: BoardProps) => {
 
   return (
     <BoardContext.Provider value={board}>
-      <div className="min-h-screen" ref={containerRef}>
+      <div className="plait-board plait-board-container min-h-screen" ref={containerRef}>
         <div
           className="viewport-container"
           ref={viewContainerRef}
@@ -173,6 +174,7 @@ export const Board = (props: BoardProps) => {
             <g className="element-active-host" ref={elementActiveHostRef}></g>
           </svg>
         </div>
+        <Toolbar></Toolbar>
       </div>
     </BoardContext.Provider>
   );
