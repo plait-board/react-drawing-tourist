@@ -6,6 +6,10 @@ import {
   RenderElementProps,
 } from "../interfaces";
 
+export enum DrawPointerType {
+  rectangle = 'rectangle'
+}
+
 export const withRectangle = (board: PlaitBoard) => {
   const { drawElement, getRectangle } = board;
   board.drawElement = (props: RenderElementProps) => {
