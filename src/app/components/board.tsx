@@ -16,10 +16,11 @@ import {
   PlaitBoardOptions,
   PlaitElement,
   PlaitPlugin,
+  PlaitPointerType,
   Viewport,
 } from "../interfaces";
 import { createBoard } from "../plugins/create-board";
-import { withRectangle } from "../plugins/rectangle";
+import { withRectangle } from "../plugins/with-rectangle";
 import { withBoard } from "../plugins/with-board";
 import { withHandPointer } from "../plugins/with-hand";
 import { withHistory } from "../plugins/with-history";
@@ -75,6 +76,7 @@ export const Board = (props: BoardProps) => {
   const viewContainerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [board, setBoard] = useState<PlaitBoard>({} as PlaitBoard);
+  const [pointer, setPointer] = useState<string>(PlaitPointerType.selection);
   const isFocused = PlaitBoard.isFocus(board);
 
   useEffect(() => {
@@ -174,7 +176,9 @@ export const Board = (props: BoardProps) => {
             <g className="element-active-host" ref={elementActiveHostRef}></g>
           </svg>
         </div>
-        <Toolbar></Toolbar>
+        <Toolbar pointer={pointer} board={board} updatePointer={(pointer: string) => {
+          setPointer(pointer);
+        }}></Toolbar>
       </div>
     </BoardContext.Provider>
   );
