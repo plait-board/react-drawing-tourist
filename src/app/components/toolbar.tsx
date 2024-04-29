@@ -1,6 +1,6 @@
 import React, { ReactNode, Ref, PropsWithChildren } from "react";
 import ReactDOM from "react-dom";
-import { RectangleIcon, SelectionIcon, handIcon } from "./icon";
+import { RectangleIcon, SelectionIcon, handIcon } from "./icons/icons";
 import { PlaitBoard, PlaitPointerType } from "../interfaces";
 import { DrawPointerType } from "../plugins/with-rectangle";
 import { BoardTransforms } from "../transforms/board";
