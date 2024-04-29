@@ -8,10 +8,20 @@ export default function Home() {
       id: "Xesdcs",
       type: "geometry",
       shape: "rectangle",
+      text: {
+        children: [
+          {
+            text: "开始",
+          },
+        ],
+        align: "center",
+      },
       points: [
         [100, 100],
         [300, 300],
       ],
+      strikeWidth: 2,
+      textHeight: 20
     },
   ] as PlaitElement[];
 

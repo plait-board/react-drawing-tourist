@@ -8,6 +8,8 @@ import {
   RectangleClient,
   RenderElementProps,
 } from "../interfaces";
+import { PlaitGeometry } from "../draw/interfaces/geometry";
+import { ShapeDefaultSpace } from "../draw/constants/geometry";
 
 const RectangleElement = () => {
   const board = useBoardStatic();
@@ -38,7 +40,7 @@ const RectangleElement = () => {
 };
 
 export enum DrawPointerType {
-  rectangle = 'rectangle'
+  rectangle = "rectangle",
 }
 
 export const withRectangle = (board: PlaitBoard) => {
@@ -60,4 +62,22 @@ export const withRectangle = (board: PlaitBoard) => {
     return getRectangle(element);
   };
   return board;
+};
+
+export const getTextRectangle = (element: PlaitGeometry) => {
+  const elementRectangle = RectangleClient.getRectangleByPoints(
+    element.points!
+  );
+  const strokeWidth = element.strokeWidth || 2;
+  const height = element.textHeight;
+  const width =
+    elementRectangle.width -
+    ShapeDefaultSpace.rectangleAndText * 2 -
+    strokeWidth * 2;
+  return {
+    height,
+    width: width > 0 ? width : 0,
+    x: elementRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth,
+    y: elementRectangle.y + (elementRectangle.height - height) / 2,
+  };
 };
