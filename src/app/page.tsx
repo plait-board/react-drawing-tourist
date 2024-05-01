@@ -21,6 +21,9 @@ export default function Home() {
         initialValue={value}
         options={{}}
         plaitPlugins={[]}
+        onChange={(e) => {
+          console.log("board change", e);
+        }}
         plaitViewport={{ zoom: 1 }}
         initializeCompleted={(board) => {
           console.log(board);

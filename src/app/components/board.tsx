@@ -1,10 +1,5 @@
 "use client";
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import rough from "roughjs";
 import useBoardEvent from "../hooks/use-board-event";
 import { BoardContext } from "../hooks/use-board-static";
@@ -32,15 +27,17 @@ import { withViewport } from "../plugins/with-viewport";
 import {
   initializeViewBox,
   initializeViewportContainer,
-  initializeViewportOffset
+  initializeViewportOffset,
 } from "../utils";
 import {
   BOARD_TO_ELEMENT_HOST,
   BOARD_TO_HOST,
   BOARD_TO_ON_CHANGE,
-  BOARD_TO_ROUGH_SVG
+  BOARD_TO_ROUGH_SVG,
 } from "../utils/weak-maps";
 import { Toolbar } from "./toolbar";
+import { withRectangleCreate } from "../plugins/with-rectangle-create";
+import { useUpdate } from "ahooks";
 
 export type BoardProps = {
   initialValue: PlaitElement[];
@@ -77,17 +74,22 @@ export const Board = (props: BoardProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [board, setBoard] = useState<PlaitBoard>({} as PlaitBoard);
   const [pointer, setPointer] = useState<string>(PlaitPointerType.selection);
+  const force = useUpdate();
   const isFocused = PlaitBoard.isFocus(board);
 
   useEffect(() => {
-    const board = withRectangle(
-      withHotkey(
-        withHandPointer(
-          withHistory(
-            withSelection(
-              withMoving(
-                withBoard(
-                  withViewport(withOptions(createBoard(initialValue, options)))
+    const board = withRectangleCreate(
+      withRectangle(
+        withHotkey(
+          withHandPointer(
+            withHistory(
+              withSelection(
+                withMoving(
+                  withBoard(
+                    withViewport(
+                      withOptions(createBoard(initialValue, options))
+                    )
+                  )
                 )
               )
             )
@@ -132,7 +134,8 @@ export const Board = (props: BoardProps) => {
     if (onChange) {
       onChange(changeEvent);
     }
-  }, [board]);
+    force();
+  }, [board, force, onChange]);
 
   useEffect(() => {
     BOARD_TO_ON_CHANGE.set(board, onContextChange);
@@ -156,7 +159,10 @@ export const Board = (props: BoardProps) => {
 
   return (
     <BoardContext.Provider value={board}>
-      <div className="plait-board plait-board-container min-h-screen" ref={containerRef}>
+      <div
+        className="plait-board plait-board-container min-h-screen"
+        ref={containerRef}
+      >
         <div
           className="viewport-container"
           ref={viewContainerRef}
@@ -176,9 +182,13 @@ export const Board = (props: BoardProps) => {
             <g className="element-active-host" ref={elementActiveHostRef}></g>
           </svg>
         </div>
-        <Toolbar pointer={pointer} board={board} updatePointer={(pointer: string) => {
-          setPointer(pointer);
-        }}></Toolbar>
+        <Toolbar
+          pointer={pointer}
+          board={board}
+          updatePointer={(pointer: string) => {
+            setPointer(pointer);
+          }}
+        />
       </div>
     </BoardContext.Provider>
   );
