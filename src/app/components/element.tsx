@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { useBoardStatic } from "../hooks/use-board-static";
 import useChildren from "../hooks/use-children";
 import { PlaitElement } from "../interfaces";
+import { ElementContext } from "../hooks/use-element-static";
 
 /**
  * Element.
@@ -10,7 +11,6 @@ import { PlaitElement } from "../interfaces";
 const Element = (props: { element: PlaitElement }) => {
   const { element } = props;
   const board = useBoardStatic();
-  const elementRef = useRef<SVGGElement>(null);
   const id = element.id;
   let children: React.ReactNode = useChildren({
     node: element,
@@ -29,21 +29,15 @@ const Element = (props: { element: PlaitElement }) => {
     ref,
   };
 
-  const renderElement = useMemo(
-    () =>
-      board.drawElement({
+  return (
+    <ElementContext.Provider value={element}>
+      {board.drawElement({
         attributes,
         children,
         element,
-      }),
-    []
+      })}
+    </ElementContext.Provider>
   );
-  
-  useEffect(() => {
-    elementRef.current?.appendChild(renderElement);
-  }, []);
-
-  return <g ref={elementRef}></g>;
 };
 
 const MemoizedElement = React.memo(Element, (prev, next) => {

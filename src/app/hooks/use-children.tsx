@@ -2,14 +2,12 @@
  * Children.
  */
 
+import ElementComponent from "../components/element";
 import { Ancestor } from "../interfaces/node";
 import { NODE_TO_INDEX, NODE_TO_PARENT } from "../utils/weak-maps";
-import { useBoardStatic } from "./use-board-static";
-import ElementComponent from "../components/element";
 
 const useChildren = (props: { node: Ancestor }) => {
   const { node } = props;
-  const board = useBoardStatic();
 
   return node.children?.map((n, i) => {
     NODE_TO_INDEX.set(n, i);

@@ -23,6 +23,7 @@ import { Ancestor, PlaitNode } from './node';
 import { Path } from './path';
 import { distanceBetweenPointAndRectangle } from '../utils/math';
 import { ClipboardData, WritableClipboardContext, getRectangleByElements } from '../utils';
+import { ReactNode } from 'react';
 
 /**
  * `RenderElementProps` are passed to the `renderElement` handler.
@@ -70,7 +71,7 @@ export interface PlaitBoard {
     getDeletedFragment: (data: PlaitElement[]) => PlaitElement[];
     getRelatedFragment: (data: PlaitElement[]) => PlaitElement[];
     dblClick: (event: MouseEvent) => void;
-    drawElement: (props: RenderElementProps) => Element;
+    drawElement: (props: RenderElementProps) => ReactNode;
     // redrawElement: (context: PlaitPluginElementContext, previousContext?: PlaitPluginElementContext) => SVGGElement[] | void;
     // destroyElement: (context: PlaitPluginElementContext) => void;
     isRectangleHit: (element: PlaitElement, range: Selection) => boolean;
