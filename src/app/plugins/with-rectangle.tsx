@@ -8,12 +8,16 @@ import {
   RectangleClient,
   RenderElementProps,
 } from "../interfaces";
+import { PlaitGeometry } from "../draw/interfaces/geometry";
+import { ShapeDefaultSpace } from "../draw/constants/geometry";
+import { Text } from "../text/text";
 
 const RectangleElement = () => {
   const board = useBoardStatic();
   const element = useElementStatic();
   const elementRef = useRef<SVGGElement>(null);
-
+  const textRectangle = getTextRectangle(element as PlaitGeometry);
+  const textValue = (element as PlaitGeometry).text;
   const node = useMemo(() => {
     const [start, realEnd] = element.points as Point[];
     const width = Math.abs(realEnd[0] - start[0]);
@@ -25,20 +29,34 @@ const RectangleElement = () => {
       width,
       height
     );
+    rectangleG.classList.add("element");
     return rectangleG;
   }, [element, board]);
 
   useEffect(() => {
     if (node) {
-      elementRef.current?.appendChild(node);
+      elementRef.current?.prepend(node);
     }
   }, [node]);
 
-  return <g ref={elementRef} />;
+  return (
+    <g ref={elementRef}>
+      <g className="text">
+        <foreignObject
+          x={textRectangle.x}
+          y={textRectangle.y}
+          width={textRectangle.width}
+          height={textRectangle.height}
+        >
+          <Text className="plait-text" value={textValue}></Text>
+        </foreignObject>
+      </g>
+    </g>
+  );
 };
 
 export enum DrawPointerType {
-  rectangle = 'rectangle'
+  rectangle = "rectangle",
 }
 
 export const withRectangle = (board: PlaitBoard) => {
@@ -60,4 +78,22 @@ export const withRectangle = (board: PlaitBoard) => {
     return getRectangle(element);
   };
   return board;
+};
+
+export const getTextRectangle = (element: PlaitGeometry) => {
+  const elementRectangle = RectangleClient.getRectangleByPoints(
+    element.points!
+  );
+  const strokeWidth = element.strokeWidth || 2;
+  const height = element.textHeight;
+  const width =
+    elementRectangle.width -
+    ShapeDefaultSpace.rectangleAndText * 2 -
+    strokeWidth * 2;
+  return {
+    height,
+    width: width > 0 ? width : 0,
+    x: elementRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth,
+    y: elementRectangle.y + (elementRectangle.height - height) / 2,
+  };
 };
