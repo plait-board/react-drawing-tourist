@@ -98,3 +98,7 @@ body {
   position: relative;
   color: #1b1b1f;;
 }
+
+.text-container {
+  text-align: center;
+}

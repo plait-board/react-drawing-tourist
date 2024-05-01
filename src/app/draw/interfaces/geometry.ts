@@ -1,7 +1,7 @@
 
-import { Options } from 'roughjs/bin/core';
 import { StrokeStyle } from './element';
 import { PlaitElement, Point } from '@/app/interfaces';
+import { Element } from 'slate';
 
 export enum BasicShapes {
     rectangle = 'rectangle',
@@ -52,7 +52,8 @@ export interface PlaitGeometry extends PlaitElement {
     type: 'geometry';
     shape: GeometryShapes;
 
-    text: ParagraphElement;
+    text: Element;
+
     textHeight: number;
 
     // node style attributes
